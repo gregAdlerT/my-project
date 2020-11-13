@@ -2,6 +2,7 @@ package com.example.application.views.full_table;
 
 import com.example.application.data.entity.Order;
 import com.example.application.data.service.RepositoryOrder;
+import com.example.application.utils.DataMapper;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -28,9 +29,7 @@ import java.util.List;
 @JsModule("@vaadin/vaadin-lumo-styles/badge.js")
 @RouteAlias(value = "table", layout = MainView.class)
 public class Table extends Div {
-
-
-
+    
 
     private DatePicker currentDate = new DatePicker();
     private ComboBox<String> garden = new ComboBox<>();// select garden
@@ -94,7 +93,6 @@ public class Table extends Div {
         grid.getColumnByKey("detail").setHeader("פרוט").setWidth("200px");
         grid.getColumnByKey("paymentQuantity").setHeader("מס תשלומים").setWidth("200px");
         grid.getColumnByKey("firstPaymentDate").setHeader("תאריך תשלום ראשון").setWidth("200px");
-        //grid.getColumnByKey("firstPaymentDate").setHeader("תאריך תשלום ראשון").setWidth("200px");
         grid.getColumnByKey("paymentDatesDetails").setHeader("תאריכים").setWidth("200px");
         grid.getColumnByKey("deliveredTo").setHeader("נמסר לה\\\"ח").setWidth("200px");
         grid.getColumnByKey("complaintPay").setHeader("שולם").setWidth("200px");
@@ -114,8 +112,9 @@ public class Table extends Div {
         grid.setDataProvider(dataProvider);
 
         addFiltersToGrid();
-
-        grid.setItems(repositoryOrder.findAll());
+        List<Order> all = repositoryOrder.findAll();
+        DataMapper.mapToXls(all);
+        grid.setItems(all);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setHeightFull();
 
